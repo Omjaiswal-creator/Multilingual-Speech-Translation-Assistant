@@ -4,47 +4,196 @@
 
 {% block content %}
 <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-<div class="container">
-    <h1>🎤 Multilingual Speech Translator</h1>
-    <p class="subtitle">Convert speech into any language instantly</p>
 
-    <form action="/process" method="POST" enctype="multipart/form-data">
-        
-        <div class="form-group">
-            <label>Source Language</label>
-            <select name="source_lang">
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>  
-                
+<div class="page-wrapper">
+  <div class="two-col-layout">
+
+    <!-- ===================== LEFT: Form Card ===================== -->
+    <div class="card card-left">
+
+      <div class="card-header">
+        <div class="logo-icon">🎤</div>
+        <h1>Multilingual Speech Translator</h1>
+      </div>
+      <p class="subtitle">Convert speech into any language instantly</p>
+      <hr class="divider">
+
+      <form action="/translate" method="POST" enctype="multipart/form-data">
+
+        <!-- Language selectors -->
+        <div class="lang-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label for="source_lang">Source language</label>
+            <select id="source_lang" name="source_lang">
+              <option value="en">🇬🇧 English</option>
+              <option value="hi">🇮🇳 Hindi</option>
+              <option value="es">🇪🇸 Spanish</option>
+              <option value="fr">🇫🇷 French</option>
+              <option value="de">🇩🇪 German</option>
+              <option value="zh">🇨🇳 Chinese</option>
+              <option value="ar">🇸🇦 Arabic</option>
+              <option value="ja">🇯🇵 Japanese</option>
+              <option value="pt">🇵🇹 Portuguese</option>
+              <option value="ru">🇷🇺 Russian</option>
             </select>
-        </div>
-
-        <div class="form-group">
-            <label>Target Language</label>
-            <select name="target_lang">
-                <option value="hi">Hindi</option>
-                <option value="en">English</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-
+          </div>
+          <div class="swap-col">
+            <button type="button" class="swap-btn" id="swap-btn" title="Swap languages">&#8644;</button>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label for="target_lang">Target language</label>
+            <select id="target_lang" name="target_lang">
+              <option value="hi">🇮🇳 Hindi</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Spanish</option>
+              <option value="fr">🇫🇷 French</option>
+              <option value="de">🇩🇪 German</option>
+              <option value="zh">🇨🇳 Chinese</option>
+              <option value="ar">🇸🇦 Arabic</option>
+              <option value="ja">🇯🇵 Japanese</option>
+              <option value="pt">🇵🇹 Portuguese</option>
+              <option value="ru">🇷🇺 Russian</option>
             </select>
+          </div>
         </div>
 
+        <!-- Text input -->
         <div class="form-group">
-            <label>Upload Audio</label>
-            <input type="file" name="audio">
+          <label for="text-input">Enter text</label>
+          <textarea id="text-input" name="text" rows="4"
+            placeholder="Type or paste text to translate…"></textarea>
         </div>
+
+        <!-- Audio upload -->
         <div class="form-group">
-    <label>Enter Text</label>
-    <textarea name="text" rows="4" placeholder="Enter text to translate"></textarea>
+          <label>Upload audio</label>
+          <label class="file-upload-label" for="audio-input">
+            <div class="file-icon-box">🎵</div>
+            <div class="file-text-info">
+              <strong id="file-name">Choose audio file</strong>
+              <span>MP3, WAV, M4A · max 25 MB</span>
+            </div>
+            <input type="file" id="audio-input" name="audio" accept="audio/*">
+          </label>
+        </div>
+
+        <button type="submit" class="btn-translate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          Translate Now
+        </button>
+
+      </form>
+    </div>
+
+    <!-- ===================== RIGHT: Features Card ===================== -->
+    <div class="card card-right">
+
+      <div class="right-header">
+        <h2>🌐 About this translator</h2>
+        <p>AI-powered multilingual engine — speech, text, and audio in one place.</p>
+      </div>
+
+      <div class="features-body">
+
+        <!-- Stats -->
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">50+</div>
+            <div class="stat-lbl">Languages</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">99%</div>
+            <div class="stat-lbl">Accuracy</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">&lt;2s</div>
+            <div class="stat-lbl">Response</div>
+          </div>
+        </div>
+
+        <!-- Key Features -->
+        <p class="section-label">Key features</p>
+        <div class="feature-list">
+          <div class="feat-item">
+            <div class="feat-dot feat-blue">🎙️</div>
+            <div class="feat-text">
+              <strong>Speech-to-text recognition</strong>
+              <span>Upload any audio file and get accurate transcription before translation.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-dot feat-pink">✍️</div>
+            <div class="feat-text">
+              <strong>Text translation</strong>
+              <span>Paste or type content directly — ideal for documents, messages and captions.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-dot feat-purple">🔄</div>
+            <div class="feat-text">
+              <strong>Auto language detection</strong>
+              <span>Not sure of the source language? The engine detects it automatically.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-dot feat-teal">📋</div>
+            <div class="feat-text">
+              <strong>Copy &amp; export results</strong>
+              <span>One-click copy of translated text, or download as a .txt file.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supported Languages -->
+        <p class="section-label">Supported languages</p>
+        <div class="lang-badges">
+          <span class="badge badge-blue">🇬🇧 English</span>
+          <span class="badge badge-pink">🇮🇳 Hindi</span>
+          <span class="badge badge-purple">🇪🇸 Spanish</span>
+          <span class="badge badge-teal">🇫🇷 French</span>
+          <span class="badge badge-blue">🇩🇪 German</span>
+          <span class="badge badge-amber">🇨🇳 Chinese</span>
+          <span class="badge badge-pink">🇸🇦 Arabic</span>
+          <span class="badge badge-purple">🇯🇵 Japanese</span>
+          <span class="badge badge-teal">🇵🇹 Portuguese</span>
+          <span class="badge badge-blue">🇷🇺 Russian</span>
+          <span class="badge badge-amber">+ 40 more</span>
+        </div>
+
+        <!-- How it works -->
+        <p class="section-label">How it works</p>
+        <div class="how-steps">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Choose your languages</strong>
+              <span>Select source and target from the dropdowns, or swap them instantly.</span>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Add text or audio</strong>
+              <span>Type directly into the text box, or upload an MP3/WAV audio file.</span>
+            </div>
+          </div>
+          <div class="step-row last-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Hit translate</strong>
+              <span>Our AI processes speech and text in under 2 seconds, ready to copy.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>
 
-        <button type="submit">Translate</button>
-    </form>
-</div>
 
 {% endblock %}

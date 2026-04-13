@@ -17,9 +17,19 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 def home():
     return render_template("index.html")
 
+@app.route('/translate', methods=['POST'])
+def translate():
+    text = request.form['text']
+    source_lang = request.form['source_lang']
+    target_lang = request.form['target_lang']
+
+    translated_text = translate_text(text, source_lang, target_lang)
+    return render_template("result.html",original_text=text, translated_text=translated_text)
+
 
 @app.route('/process', methods=['POST'])
 def process():
+    return "Processing..."  # Placeholder for actual processing logic
 
     # audio = request.files['audio']
     # source_lang = request.form['source_lang']
@@ -29,20 +39,12 @@ def process():
     # audio_path = os.path.join(UPLOAD_FOLDER, audio.filename)
     # audio.save(audio_path)
 
-    # 👉 TEMP: Instead of Whisper (for now)
-    original_text = request.form.get("text", "Hello, how are you?")
-
-    # Translate using MarianMT
-    translated_text = translate_text(original_text)
 
     # # Generate audio
     # audio_file = generate_audio(translated_text)
 
-    return render_template(
-        "result.html",
-        original_text=original_text,
-        translated_text=translated_text,
-    )
+
+
 
 
 if __name__ == "__main__":
