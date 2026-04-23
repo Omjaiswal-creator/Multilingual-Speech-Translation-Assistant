@@ -4,34 +4,44 @@ import whisper
 
 logger = logging.getLogger(__name__)
 
-# Load Whisper model once at import time (downloads on first run)
-# options: tiny, base, small, medium, large
+# ------------------ LOAD MODEL ONCE ------------------
+# This will download the model only the first time
+# Options: tiny, base, small, medium, large
 model = whisper.load_model("base")
 
 
+# ------------------ MAIN FUNCTION ------------------
 def speech_to_text(audio_path: str) -> str:
     """
-    Transcribe an audio file to text using OpenAI Whisper.
+    Convert audio file → text using Whisper
 
-    FIX: always resolve to an absolute path before passing to Whisper.
-    Whisper (and ffmpeg underneath it) cannot handle relative paths on
-    Windows — they raise "The system cannot find the file specified."
+    FIXES:
+    - Works in Flask (not Colab)
+    - Uses absolute path (Windows fix)
+    - Handles file errors safely
     """
-    # Resolve to absolute path — critical fix for Windows
-    audio_path = os.path.abspath(audio_path)
-
-    # Guard: confirm the file exists before handing off to Whisper
-    if not os.path.exists(audio_path):
-        logger.error("speech_to_text: file not found → %s", audio_path)
-        return f"Error: file not found at {audio_path}"
-
-    logger.info("speech_to_text: transcribing → %s", audio_path)
 
     try:
+        # 🔥 Convert to absolute path (IMPORTANT for Windows)
+        audio_path = os.path.abspath(audio_path)
+
+        logger.info(f"Processing file: {audio_path}")
+
+        # ✅ Check if file exists
+        if not os.path.exists(audio_path):
+            return f"Error: File not found → {audio_path}"
+
+        # ✅ Transcribe audio
         result = model.transcribe(audio_path)
+
         text = result.get("text", "").strip()
-        logger.info("speech_to_text: extracted %d chars", len(text))
+
+        # ✅ Check empty result
+        if not text:
+            return "Error: Could not extract speech from audio"
+
         return text
+
     except Exception as e:
-        logger.error("speech_to_text: Whisper error → %s", e)
+        logger.error(f"Whisper Error: {str(e)}")
         return f"Error: {str(e)}"
