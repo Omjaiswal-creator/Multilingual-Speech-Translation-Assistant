@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Translate | MSTA{% endblock %}
+{% block title %}Translate — MSTA{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -9,268 +9,299 @@
 <div class="page-wrapper">
   <div class="two-col-layout">
 
-    <!-- ── LEFT: Translation Form ──────────────────────────────────────── -->
-    <div class="card card-left">
+    <!-- ═══════════════════════════════════════════════════════════════════
+         LEFT — Translation Form
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="card card-left" aria-labelledby="translator-heading">
 
       <div class="card-header">
-        <div class="logo-icon">🎤</div>
-        <h1>Multilingual Speech Translator</h1>
+        <div class="logo-icon" aria-hidden="true">🎤</div>
+        <h1 id="translator-heading">Multilingual Speech Translator</h1>
       </div>
-      <p class="subtitle">Convert speech into any language instantly</p>
+      <p class="subtitle">Convert speech or text into any language instantly</p>
       <hr class="divider">
 
-      <form action="{{ url_for('translate.translate') }}" method="POST"
-            enctype="multipart/form-data" id="translate-form">
+      <form
+        action="{{ url_for('translate.translate') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        id="translate-form"
+        novalidate>
 
-        <!-- Language selectors -->
-        <div class="lang-row">
-          <div class="form-group" style="margin-bottom:0">  
-            <label for="source_lang">Source language</label>
-            <select id="source_lang" name="source_lang">
+        <!-- Language pair row — expanded list from HEAD, fieldset structure from branch -->
+        <fieldset style="border:none;padding:0;margin:0">
+          <legend class="sr-only">Language selection</legend>
+          <div class="lang-row">
 
-            <!-- Core -->
-            <option value="en">🇬🇧 English</option>
-            <option value="hi">🇮🇳 Hindi</option>
+            <!-- Source language -->
+            <div class="form-group" style="margin-bottom:0">
+              <label for="source_lang">Source language</label>
+              <select id="source_lang" name="source_lang">
+                <!-- Core -->
+                <option value="en">🇬🇧 English</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <!-- Indian -->
+                <option value="bn">🇧🇩 Bengali</option>
+                <option value="ur">🇵🇰 Urdu</option>
+                <option value="ta">🇮🇳 Tamil</option>
+                <option value="te">🇮🇳 Telugu</option>
+                <option value="mr">🇮🇳 Marathi</option>
+                <option value="gu">🇮🇳 Gujarati</option>
+                <option value="pa">🇮🇳 Punjabi</option>
+                <option value="ml">🇮🇳 Malayalam</option>
+                <option value="kn">🇮🇳 Kannada</option>
+                <option value="ne">🇳🇵 Nepali</option>
+                <option value="si">🇱🇰 Sinhala</option>
+                <!-- European -->
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="it">🇮🇹 Italian</option>
+                <option value="nl">🇳🇱 Dutch</option>
+                <option value="pl">🇵🇱 Polish</option>
+                <option value="pt">🇵🇹 Portuguese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="uk">🇺🇦 Ukrainian</option>
+                <option value="el">🇬🇷 Greek</option>
+                <!-- Asian -->
+                <option value="zh">🇨🇳 Chinese</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="ko">🇰🇷 Korean</option>
+                <option value="th">🇹🇭 Thai</option>
+                <option value="vi">🇻🇳 Vietnamese</option>
+                <option value="id">🇮🇩 Indonesian</option>
+                <option value="ms">🇲🇾 Malay</option>
+                <!-- Middle East -->
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="fa">🇮🇷 Persian</option>
+                <option value="he">🇮🇱 Hebrew</option>
+                <!-- African -->
+                <option value="sw">🌍 Swahili</option>
+                <option value="yo">🌍 Yoruba</option>
+                <option value="ha">🌍 Hausa</option>
+                <option value="am">🌍 Amharic</option>
+                <!-- Other -->
+                <option value="tr">🇹🇷 Turkish</option>
+              </select>
+            </div>
 
-            <!-- Indian Languages -->
-            <option value="bn">🇧🇩 Bengali</option>
-            <option value="ur">🇵🇰 Urdu</option>
-            <option value="ta">🇮🇳 Tamil</option>
-            <option value="te">🇮🇳 Telugu</option>
-            <option value="mr">🇮🇳 Marathi</option>
-            <option value="gu">🇮🇳 Gujarati</option>
-            <option value="pa">🇮🇳 Punjabi</option>
-            <option value="as">🇮🇳 Assamese</option>
-            <option value="or">🇮🇳 Odia</option>
-            <option value="ml">🇮🇳 Malayalam</option>
-            <option value="kn">🇮🇳 Kannada</option>
-            <option value="ne">🇳🇵 Nepali</option>
-            <option value="si">🇱🇰 Sinhala</option>
-            <option value="ks">🇮🇳 Kashmiri</option>
-            <option value="kok">🇮🇳 Konkani</option>
-            <option value="mai">🇮🇳 Maithili</option>
-            <option value="bho">🇮🇳 Bhojpuri</option>
-            <option value="sat">🇮🇳 Santali</option>
-            <option value="doi">🇮🇳 Dogri</option>
+            <!-- Swap button -->
+            <div class="swap-col">
+              <button
+                type="button"
+                class="swap-btn"
+                id="swap-btn"
+                aria-label="Swap source and target languages">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 16V4m0 0L3 8m4-4l4 4"/>
+                  <path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                </svg>
+              </button>
+            </div>
 
-            <!-- European -->
-            <option value="es">🇪🇸 Spanish</option>
-            <option value="fr">🇫🇷 French</option>
-            <option value="de">🇩🇪 German</option>
-            <option value="it">🇮🇹 Italian</option>
-            <option value="nl">🇳🇱 Dutch</option>
-            <option value="pl">🇵🇱 Polish</option>
-            <option value="pt">🇵🇹 Portuguese</option>
-            <option value="ru">🇷🇺 Russian</option>
-            <option value="uk">🇺🇦 Ukrainian</option>
-            <option value="el">🇬🇷 Greek</option>
+            <!-- Target language -->
+            <div class="form-group" style="margin-bottom:0">
+              <label for="target_lang">Target language</label>
+              <select id="target_lang" name="target_lang">
+                <!-- Core -->
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="en">🇬🇧 English</option>
+                <!-- Indian -->
+                <option value="bn">🇧🇩 Bengali</option>
+                <option value="ur">🇵🇰 Urdu</option>
+                <option value="ta">🇮🇳 Tamil</option>
+                <option value="te">🇮🇳 Telugu</option>
+                <option value="mr">🇮🇳 Marathi</option>
+                <option value="gu">🇮🇳 Gujarati</option>
+                <option value="pa">🇮🇳 Punjabi</option>
+                <option value="ml">🇮🇳 Malayalam</option>
+                <option value="kn">🇮🇳 Kannada</option>
+                <option value="ne">🇳🇵 Nepali</option>
+                <option value="si">🇱🇰 Sinhala</option>
+                <!-- European -->
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="it">🇮🇹 Italian</option>
+                <option value="nl">🇳🇱 Dutch</option>
+                <option value="pl">🇵🇱 Polish</option>
+                <option value="pt">🇵🇹 Portuguese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="uk">🇺🇦 Ukrainian</option>
+                <option value="el">🇬🇷 Greek</option>
+                <!-- Asian -->
+                <option value="zh">🇨🇳 Chinese</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="ko">🇰🇷 Korean</option>
+                <option value="th">🇹🇭 Thai</option>
+                <option value="vi">🇻🇳 Vietnamese</option>
+                <option value="id">🇮🇩 Indonesian</option>
+                <option value="ms">🇲🇾 Malay</option>
+                <!-- Middle East -->
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="fa">🇮🇷 Persian</option>
+                <option value="he">🇮🇱 Hebrew</option>
+                <!-- African -->
+                <option value="sw">🌍 Swahili</option>
+                <option value="yo">🌍 Yoruba</option>
+                <option value="ha">🌍 Hausa</option>
+                <option value="am">🌍 Amharic</option>
+                <!-- Other -->
+                <option value="tr">🇹🇷 Turkish</option>
+              </select>
+            </div>
 
-            <!-- Asian -->
-            <option value="zh">🇨🇳 Chinese</option>
-            <option value="ja">🇯🇵 Japanese</option>
-            <option value="ko">🇰🇷 Korean</option>
-            <option value="th">🇹🇭 Thai</option>
-            <option value="vi">🇻🇳 Vietnamese</option>
-            <option value="id">🇮🇩 Indonesian</option>
-            <option value="ms">🇲🇾 Malay</option>
-
-            <!-- Middle East -->
-            <option value="ar">🇸🇦 Arabic</option>
-            <option value="fa">🇮🇷 Persian</option>
-            <option value="he">🇮🇱 Hebrew</option>
-
-            <!-- African -->
-            <option value="sw">🌍 Swahili</option>
-            <option value="yo">🌍 Yoruba</option>
-            <option value="ig">🌍 Igbo</option>
-            <option value="ha">🌍 Hausa</option>
-            <option value="am">🌍 Amharic</option>
-
-          <!-- Others -->
-          <option value="tr">🇹🇷 Turkish</option>
-
-          </select>
           </div>
-          <div class="swap-col">
-            <button type="button" class="swap-btn" id="swap-btn" title="Swap languages">&#8644;</button>
-          </div>
-          <div class="form-group" style="margin-bottom:0">
-            <label for="target_lang">Target language</label>
-            <select id="target_lang" name="target_lang">
+        </fieldset>
 
-              <!-- Core -->
-              <option value="hi">🇮🇳 Hindi</option>
-              <option value="en">🇬🇧 English</option>
-
-              <!-- Indian Languages -->
-              <option value="bn">🇧🇩 Bengali</option>
-              <option value="ur">🇵🇰 Urdu</option>
-              <option value="ta">🇮🇳 Tamil</option>
-              <option value="te">🇮🇳 Telugu</option>
-              <option value="mr">🇮🇳 Marathi</option>
-              <option value="gu">🇮🇳 Gujarati</option>
-              <option value="pa">🇮🇳 Punjabi</option>
-              <option value="as">🇮🇳 Assamese</option>
-              <option value="or">🇮🇳 Odia</option>
-              <option value="ml">🇮🇳 Malayalam</option>
-              <option value="kn">🇮🇳 Kannada</option>
-              <option value="ne">🇳🇵 Nepali</option>
-              <option value="si">🇱🇰 Sinhala</option>
-              <option value="ks">🇮🇳 Kashmiri</option>
-              <option value="kok">🇮🇳 Konkani</option>
-              <option value="mai">🇮🇳 Maithili</option>
-              <option value="bho">🇮🇳 Bhojpuri</option>
-              <option value="sat">🇮🇳 Santali</option>
-              <option value="doi">🇮🇳 Dogri</option>
-
-              <!-- European -->
-              <option value="es">🇪🇸 Spanish</option>
-              <option value="fr">🇫🇷 French</option>
-              <option value="de">🇩🇪 German</option>
-              <option value="it">🇮🇹 Italian</option>
-              <option value="nl">🇳🇱 Dutch</option>
-              <option value="pl">🇵🇱 Polish</option>
-              <option value="pt">🇵🇹 Portuguese</option>
-              <option value="ru">🇷🇺 Russian</option>
-              <option value="uk">🇺🇦 Ukrainian</option>
-              <option value="el">🇬🇷 Greek</option>
-
-              <!-- Asian -->
-              <option value="zh">🇨🇳 Chinese</option>
-              <option value="ja">🇯🇵 Japanese</option>
-              <option value="ko">🇰🇷 Korean</option>
-              <option value="th">🇹🇭 Thai</option>
-              <option value="vi">🇻🇳 Vietnamese</option>
-              <option value="id">🇮🇩 Indonesian</option>
-              <option value="ms">🇲🇾 Malay</option>
-
-              <!-- Middle East -->
-              <option value="ar">🇸🇦 Arabic</option>
-              <option value="fa">🇮🇷 Persian</option>
-              <option value="he">🇮🇱 Hebrew</option>
-
-              <!-- African -->
-              <option value="sw">🌍 Swahili</option>
-              <option value="yo">🌍 Yoruba</option>
-              <option value="ig">🌍 Igbo</option>
-              <option value="ha">🌍 Hausa</option>
-              <option value="am">🌍 Amharic</option>
-
-              <!-- Others -->
-              <option value="tr">🇹🇷 Turkish</option>
-
-            </select>
-          </div>
-        </div>
-
-        <!-- Model choice -->
+        <!-- Model selector -->
         <div class="form-group">
           <label for="model_choice">Translation model</label>
-          <select id="model_choice" name="model_choice" onchange="onModelChange(this.value)">
-            <option value="huggingface">Hugging Face Local Model</option>
-            <option value="groq">Groq LLaMA 3.3 Versatile</option>
-            <option value="speech">🎙️ Speech Model (Audio → Text → Translate)</option>
+          <select
+            id="model_choice"
+            name="model_choice"
+            onchange="onModelChange(this.value)"
+            aria-describedby="model-desc">
+            <option value="huggingface">Hugging Face — Local Model</option>
+            <option value="groq">Groq — LLaMA 3.3 Versatile</option>
+            <option value="speech"> Speech Model (Audio → Text → Translate)</option>
           </select>
+          <span class="field-hint" id="model-desc" style="display:none"></span>
         </div>
 
-        <!-- Text input (hidden when speech model is selected) -->
+        <!-- Text input -->
         <div class="form-group" id="text-input-group">
-          <label for="text-input">Enter text</label>
-          <textarea id="text-input" name="text" rows="4"
-            placeholder="Type or paste text to translate…"></textarea>
+          <label for="text-input">Text to translate</label>
+          <textarea
+            id="text-input"
+            name="text"
+            rows="4"
+            placeholder="Type or paste text here…"
+            aria-label="Text to translate"></textarea>
         </div>
 
-        <!-- Audio upload — always visible, REQUIRED for speech model -->
+        <!-- Audio upload — single input, explicit accept list -->
         <div class="form-group" id="audio-group">
-          <label id="audio-label">Upload audio <span id="audio-optional">(optional)</span></label>
+          <label id="audio-label">
+            Audio file
+            <span id="audio-optional" style="font-weight:400;color:var(--text-muted)">(optional)</span>
+          </label>
           <label class="file-upload-label" for="audio-input">
-            <div class="file-icon-box">🎵</div>
+            <div class="file-icon-box" aria-hidden="true">🎵</div>
             <div class="file-text-info">
               <strong id="file-name">Choose audio file</strong>
-              <span id="audio-hint">MP3, WAV, M4A · max 25 MB</span>
+              <span id="audio-hint">MP3, WAV, M4A, OGG · max 25 MB</span>
             </div>
-            <input type="file" id="audio-input" name="audio" accept=".mp3,.wav,.m4a,.ogg,.flac,.webm">
+            <input
+              type="file"
+              id="audio-input"
+              name="audio"
+              accept=".mp3,.wav,.m4a,.ogg,.flac,.webm"
+              aria-label="Upload audio file for transcription">
           </label>
-          <!-- Speech model info banner (hidden by default) -->
-          <div id="speech-info" class="speech-info-box hidden">
-            🎙️ Audio will be transcribed with <strong>Whisper</strong>, then translated into your target language.
+
+          <!-- Speech model callout (hidden by default) -->
+          <div id="speech-info" class="speech-info-box hidden" role="note" aria-live="polite">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true" style="flex-shrink:0;margin-top:1px">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Audio will be transcribed with <strong>Whisper</strong>, then translated into your target language.
           </div>
         </div>
 
+        <!-- Submit -->
         <button type="submit" class="btn-translate" id="translate-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-          <span class="btn-label" id="btn-label-text">Translate Now</span>
-          <span class="btn-loading hidden">Processing…</span>
+          <span id="btn-label-text">Translate Now</span>
+          <span class="btn-loading hidden" aria-live="polite" aria-label="Processing translation">Processing…</span>
         </button>
 
       </form>
-    </div>
+    </section>
 
-    <!-- ── RIGHT: Features Panel ───────────────────────────────────────── -->
-    <div class="card card-right">
+    <!-- ═══════════════════════════════════════════════════════════════════
+         RIGHT — Features Panel
+         ═══════════════════════════════════════════════════════════════════ -->
+    <aside class="card card-right" aria-label="Translator capabilities">
+
       <div class="right-header">
-        <h2>🌐 About this translator</h2>
+        <h2>About this translator</h2>
         <p>AI-powered multilingual engine — speech, text, and audio in one place.</p>
       </div>
 
-      <div class="features-body">
-        <div class="stat-row">
-          <div class="stat-box"><div class="stat-num">50+</div><div class="stat-lbl">Languages</div></div>
-          <div class="stat-box"><div class="stat-num">92%</div><div class="stat-lbl">Accuracy</div></div>
-          <div class="stat-box"><div class="stat-num">&lt;2s</div><div class="stat-lbl">Response</div></div>
+      <div class="stat-row" role="list" aria-label="Key metrics">
+        <div class="stat-box" role="listitem">
+          <div class="stat-num">50+</div>
+          <div class="stat-lbl">Languages</div>
         </div>
-
-        <p class="section-label">Key features</p>
-        <div class="feature-list">
-          <div class="feat-item">
-            <div class="feat-dot feat-blue">🎙️</div>
-            <div class="feat-text">
-              <strong>Speech-to-text recognition</strong>
-              <span>Upload any audio file and get accurate transcription before translation.</span>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-dot feat-pink">✍️</div>
-            <div class="feat-text">
-              <strong>Text translation</strong>
-              <span>Paste or type content directly — ideal for documents, messages and captions.</span>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-dot feat-purple">🔄</div>
-            <div class="feat-text">
-              <strong>Dual AI models</strong>
-              <span>Choose between local Hugging Face models or Groq's LLaMA 3.3.</span>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-dot feat-teal">📋</div>
-            <div class="feat-text">
-              <strong>History saved</strong>
-              <span>Every translation is saved to your personal history for later reference.</span>
-            </div>
-          </div>
+        <div class="stat-box" role="listitem">
+          <div class="stat-num">92%</div>
+          <div class="stat-lbl">Accuracy</div>
         </div>
-
-        <p class="section-label">Supported languages</p>
-        <div class="lang-badges">
-          <span class="badge badge-blue">🇬🇧 English</span>
-          <span class="badge badge-pink">🇮🇳 Hindi</span>
-          <span class="badge badge-purple">🇪🇸 Spanish</span>
-          <span class="badge badge-teal">🇫🇷 French</span>
-          <span class="badge badge-blue">🇩🇪 German</span>
-          <span class="badge badge-amber">🇨🇳 Chinese</span>
-          <span class="badge badge-pink">🇸🇦 Arabic</span>
-          <span class="badge badge-purple">🇯🇵 Japanese</span>
-          <span class="badge badge-teal">🇵🇹 Portuguese</span>
-          <span class="badge badge-blue">🇷🇺 Russian</span>
-          <span class="badge badge-amber">+ 40 more</span>
+        <div class="stat-box" role="listitem">
+          <div class="stat-num">&lt;2s</div>
+          <div class="stat-lbl">Response</div>
         </div>
       </div>
-    </div>
+
+      <p class="section-label">Key features</p>
+      <ul class="feature-list" role="list" style="list-style:none">
+        <li class="feat-item">
+          <div class="feat-dot feat-blue" aria-hidden="true">🎙️</div>
+          <div class="feat-text">
+            <strong>Speech-to-text recognition</strong>
+            <span>Upload any audio file and get accurate transcription before translation.</span>
+          </div>
+        </li>
+        <li class="feat-item">
+          <div class="feat-dot feat-pink" aria-hidden="true">✍️</div>
+          <div class="feat-text">
+            <strong>Text translation</strong>
+            <span>Paste or type content directly — ideal for documents, messages and captions.</span>
+          </div>
+        </li>
+        <li class="feat-item">
+          <div class="feat-dot feat-purple" aria-hidden="true">🔄</div>
+          <div class="feat-text">
+            <strong>Dual AI models</strong>
+            <span>Choose between local Hugging Face models or Groq's LLaMA 3.3.</span>
+          </div>
+        </li>
+        <li class="feat-item">
+          <div class="feat-dot feat-teal" aria-hidden="true">📋</div>
+          <div class="feat-text">
+            <strong>History saved</strong>
+            <span>Every translation is saved to your personal history for later reference.</span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="section-label">Supported languages</p>
+      <div class="lang-badges" aria-label="Supported languages">
+        <span class="badge badge-blue">🇬🇧 English</span>
+        <span class="badge badge-pink">🇮🇳 Hindi</span>
+        <span class="badge badge-purple">🇪🇸 Spanish</span>
+        <span class="badge badge-teal">🇫🇷 French</span>
+        <span class="badge badge-blue">🇩🇪 German</span>
+        <span class="badge badge-amber">🇨🇳 Chinese</span>
+        <span class="badge badge-pink">🇸🇦 Arabic</span>
+        <span class="badge badge-purple">🇯🇵 Japanese</span>
+        <span class="badge badge-teal">🇵🇹 Portuguese</span>
+        <span class="badge badge-blue">🇷🇺 Russian</span>
+        <span class="badge badge-amber">+ 40 more</span>
+      </div>
+
+    </aside>
 
   </div>
 </div>
@@ -278,7 +309,12 @@
 
 {% block extra_js %}
 <script>
-  // ── Model change handler ──────────────────────────────────────────────────
+  const MODEL_HINTS = {
+    huggingface: 'Local model — no API key required. Best for offline use.',
+    groq:        'Cloud model — faster and more accurate. Requires Groq API key.',
+    speech:      'Transcribes audio with Whisper, then translates the result.'
+  };
+
   function onModelChange(val) {
     const isSpeech      = val === 'speech';
     const textGroup     = document.getElementById('text-input-group');
@@ -286,16 +322,18 @@
     const speechInfo    = document.getElementById('speech-info');
     const btnLabel      = document.getElementById('btn-label-text');
     const audioInput    = document.getElementById('audio-input');
+    const modelDesc     = document.getElementById('model-desc');
+
+    modelDesc.textContent = MODEL_HINTS[val] || '';
+    modelDesc.style.display = 'block';
 
     if (isSpeech) {
-      // Hide text box — not needed for speech mode
       textGroup.classList.add('hidden');
-      // Mark audio as required
       audioOptional.textContent = '(required)';
       audioOptional.style.color = '#e74c3c';
       audioInput.setAttribute('required', 'required');
       speechInfo.classList.remove('hidden');
-      btnLabel.textContent = '🎙️ Transcribe & Translate';
+      btnLabel.textContent = 'Transcribe & Translate';
     } else {
       textGroup.classList.remove('hidden');
       audioOptional.textContent = '(optional)';
@@ -306,11 +344,11 @@
     }
   }
 
-  // ── Loading state on submit ───────────────────────────────────────────────
   document.getElementById('translate-form').addEventListener('submit', function () {
     const btn = document.getElementById('translate-btn');
     btn.disabled = true;
-    btn.querySelector('.btn-label').classList.add('hidden');
+    btn.querySelector('svg').style.display = 'none';
+    document.getElementById('btn-label-text').classList.add('hidden');
     btn.querySelector('.btn-loading').classList.remove('hidden');
   });
 </script>
